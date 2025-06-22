@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect } from "react"
 import { Trash2, Truck, AlertCircle, CheckCircle } from "lucide-react"
 
-// EmailJS configuration - UPDATED WITH YOUR CREDENTIALS
+// EmailJS configuration
 const EMAILJS_SERVICE_ID = "service_x30hhbp"
 const EMAILJS_TEMPLATE_ID_JUNK = "template_y3prwme"
 const EMAILJS_TEMPLATE_ID_MOVE = "template_a5ogr5k"
@@ -196,32 +196,6 @@ Thank you!`
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-16">
-        {/* Setup Status */}
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-center">
-            <AlertCircle className="h-5 w-5 text-blue-600 mr-2" />
-            <div>
-              <p className="text-blue-800 font-semibold">EmailJS Setup Status:</p>
-              <p className="text-blue-700 text-sm">
-                ✅ Service ID: {EMAILJS_SERVICE_ID}
-                <br />✅ Junk Template: {EMAILJS_TEMPLATE_ID_JUNK}
-                <br />✅ Moving Template: {EMAILJS_TEMPLATE_ID_MOVE}
-                <br />
-                {EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
-                  ? "⚠️ Public Key: Need to add your public key"
-                  : "✅ Public Key: Configured"}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* EmailJS Loading Status */}
-        {!emailJSLoaded && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-yellow-800 text-sm">Loading EmailJS system...</p>
-          </div>
-        )}
-
         {/* Service Selection */}
         {!serviceType && (
           <div className="text-center mb-12">
@@ -281,7 +255,7 @@ Thank you!`
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
             <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
             <span className="text-green-800">
-              Success! Your request has been submitted via EmailJS. Redirecting to thank you page...
+              Success! Your request has been submitted. Redirecting to thank you page...
             </span>
           </div>
         )}
@@ -290,7 +264,7 @@ Thank you!`
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
             <div className="flex items-center mb-2">
               <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-              <span className="text-red-800 font-semibold">EmailJS submission failed</span>
+              <span className="text-red-800 font-semibold">Form submission failed</span>
             </div>
             <p className="text-red-700 text-sm mb-3">Don't worry! You can still reach us using the options below:</p>
             <div className="flex flex-col sm:flex-row gap-2">
@@ -434,16 +408,10 @@ Thank you!`
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !emailJSLoaded || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"}
+                  disabled={isSubmitting || !emailJSLoaded}
                   className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl disabled:opacity-50"
                 >
-                  {isSubmitting
-                    ? "Submitting via EmailJS..."
-                    : !emailJSLoaded
-                      ? "Loading EmailJS..."
-                      : EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
-                        ? "Need Public Key to Enable"
-                        : "Submit Junk Removal Request"}
+                  {isSubmitting ? "Submitting Request..." : "Submit Junk Removal Request"}
                 </Button>
               </form>
 
@@ -629,16 +597,10 @@ Thank you!`
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !emailJSLoaded || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"}
+                  disabled={isSubmitting || !emailJSLoaded}
                   className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl disabled:opacity-50"
                 >
-                  {isSubmitting
-                    ? "Submitting via EmailJS..."
-                    : !emailJSLoaded
-                      ? "Loading EmailJS..."
-                      : EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
-                        ? "Need Public Key to Enable"
-                        : "Submit Moving Help Request"}
+                  {isSubmitting ? "Submitting Request..." : "Submit Moving Help Request"}
                 </Button>
               </form>
 
