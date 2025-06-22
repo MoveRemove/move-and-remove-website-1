@@ -136,7 +136,7 @@ export default function AboutPage() {
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="h-6 w-6 text-sage-600 mr-3 flex-shrink-0" />
-                  <span className="text-charcoal-light">Same-day service when available</span>
+                  <span className="text-charcoal-light">Next-day service when available</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="h-6 w-6 text-sage-600 mr-3 flex-shrink-0" />
@@ -164,7 +164,16 @@ export default function AboutPage() {
       <footer className="bg-sage-600 text-white py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-lg">
-            <strong>Email:</strong> moveandremovesolutions@gmail.com | <strong>Phone:</strong> 717-817-8363
+            <strong>Email:</strong>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sage-100 hover:text-white underline transition-colors ml-1"
+            >
+              moveandremovesolutions@gmail.com
+            </a>{" "}
+            | <strong>Phone:</strong> 717-817-8363
           </p>
         </div>
       </footer>

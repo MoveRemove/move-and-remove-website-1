@@ -192,7 +192,16 @@ export default function ThankYouPage() {
       <footer className="bg-sage-600 text-white py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-lg mb-4">
-            <strong>Email:</strong> moveandremovesolutions@gmail.com | <strong>Phone:</strong> 717-817-8363
+            <strong>Email:</strong>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-sage-100 underline transition-colors ml-1"
+            >
+              moveandremovesolutions@gmail.com
+            </a>{" "}
+            | <strong>Phone:</strong> 717-817-8363
           </p>
           <p className="text-sage-100">Thank you for choosing Move and Remove Solutions!</p>
         </div>

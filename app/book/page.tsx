@@ -1,17 +1,141 @@
 "use client"
 
+import type React from "react"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useState } from "react"
-import { Trash2, Truck } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Trash2, Truck, AlertCircle, CheckCircle } from "lucide-react"
+
+// EmailJS configuration - UPDATED WITH YOUR CREDENTIALS
+const EMAILJS_SERVICE_ID = "service_x30hhbp"
+const EMAILJS_TEMPLATE_ID_JUNK = "template_y3prwme"
+const EMAILJS_TEMPLATE_ID_MOVE = "template_a5ogr5k"
+const EMAILJS_PUBLIC_KEY = "TJgeFdygqh8M1iPRU"
 
 export default function BookPage() {
   const [serviceType, setServiceType] = useState<"junk" | "move" | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [emailJSLoaded, setEmailJSLoaded] = useState(false)
+
+  // Load EmailJS script
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    script.onload = () => {
+      // Initialize EmailJS
+      if (window.emailjs) {
+        window.emailjs.init(EMAILJS_PUBLIC_KEY)
+        setEmailJSLoaded(true)
+      }
+    }
+    document.head.appendChild(script)
+
+    return () => {
+      document.head.removeChild(script)
+    }
+  }, [])
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    // Convert FormData to object
+    const templateParams: Record<string, string> = {}
+    formData.forEach((value, key) => {
+      templateParams[key] = value.toString()
+    })
+
+    // Add current date and time
+    templateParams.submission_date = new Date().toLocaleString()
+
+    try {
+      if (!emailJSLoaded || !window.emailjs) {
+        throw new Error("EmailJS not loaded")
+      }
+
+      const templateId = serviceType === "junk" ? EMAILJS_TEMPLATE_ID_JUNK : EMAILJS_TEMPLATE_ID_MOVE
+
+      const result = await window.emailjs.send(EMAILJS_SERVICE_ID, templateId, templateParams)
+
+      if (result.status === 200) {
+        setSubmitStatus("success")
+        form.reset()
+        // Redirect to thank you page after 2 seconds
+        setTimeout(() => {
+          window.location.href = "/thank-you"
+        }, 2000)
+      } else {
+        throw new Error("EmailJS send failed")
+      }
+    } catch (error) {
+      console.error("Form submission error:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const generateEmailTemplate = (type: "junk" | "move") => {
+    const subject = type === "junk" ? "🗑️ JUNK REMOVAL REQUEST" : "🚚 MOVING HELP REQUEST"
+    const body =
+      type === "junk"
+        ? `Hello Move & Remove Solutions,
+
+I would like to request junk removal service. Here are my details:
+
+Full Name: [Your Name]
+Email: [Your Email]
+Phone: [Your Phone]
+Service Address: [Your Address]
+Preferred Date: [Date]
+Preferred Time: [Time]
+
+Items to Remove:
+[Please describe what needs to be removed]
+
+Additional Details:
+[Any special requirements or notes]
+
+Thank you!`
+        : `Hello Move & Remove Solutions,
+
+I would like to request moving help service. Here are my details:
+
+Full Name: [Your Name]
+Email: [Your Email]
+Phone: [Your Phone]
+Type of Move: [Move Type]
+From Address: [From Address]
+To Address: [To Address]
+Preferred Date: [Date]
+Preferred Time: [Time]
+
+Moving Details:
+[Please describe what needs to be moved]
+
+Additional Requirements:
+[Any special requirements or notes]
+
+Thank you!`
+
+    return { subject, body }
+  }
+
+  const openGmailCompose = (type: "junk" | "move") => {
+    const { subject, body } = generateEmailTemplate(type)
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.open(gmailUrl, "_blank")
+  }
 
   return (
     <div className="min-h-screen bg-cream">
@@ -72,6 +196,32 @@ export default function BookPage() {
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-16">
+        {/* Setup Status */}
+        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center">
+            <AlertCircle className="h-5 w-5 text-blue-600 mr-2" />
+            <div>
+              <p className="text-blue-800 font-semibold">EmailJS Setup Status:</p>
+              <p className="text-blue-700 text-sm">
+                ✅ Service ID: {EMAILJS_SERVICE_ID}
+                <br />✅ Junk Template: {EMAILJS_TEMPLATE_ID_JUNK}
+                <br />✅ Moving Template: {EMAILJS_TEMPLATE_ID_MOVE}
+                <br />
+                {EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
+                  ? "⚠️ Public Key: Need to add your public key"
+                  : "✅ Public Key: Configured"}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* EmailJS Loading Status */}
+        {!emailJSLoaded && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 text-sm">Loading EmailJS system...</p>
+          </div>
+        )}
+
         {/* Service Selection */}
         {!serviceType && (
           <div className="text-center mb-12">
@@ -99,6 +249,64 @@ export default function BookPage() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Alternative Contact Methods */}
+            <div className="mt-12 p-6 bg-blue-50 rounded-lg border border-blue-200">
+              <h3 className="text-lg font-semibold text-charcoal mb-4">Prefer to Contact Us Directly?</h3>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="tel:717-817-8363">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 text-lg font-semibold">
+                    📞 Call: 717-817-8363
+                  </Button>
+                </a>
+                <Button
+                  onClick={() => openGmailCompose("junk")}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 text-lg font-semibold"
+                >
+                  ✉️ Email for Junk Removal
+                </Button>
+                <Button
+                  onClick={() => openGmailCompose("move")}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 text-lg font-semibold"
+                >
+                  ✉️ Email for Moving Help
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Status Messages */}
+        {submitStatus === "success" && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
+            <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+            <span className="text-green-800">
+              Success! Your request has been submitted via EmailJS. Redirecting to thank you page...
+            </span>
+          </div>
+        )}
+
+        {submitStatus === "error" && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center mb-2">
+              <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
+              <span className="text-red-800 font-semibold">EmailJS submission failed</span>
+            </div>
+            <p className="text-red-700 text-sm mb-3">Don't worry! You can still reach us using the options below:</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <a href="tel:717-817-8363">
+                <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                  📞 Call Us
+                </Button>
+              </a>
+              <Button
+                size="sm"
+                onClick={() => openGmailCompose(serviceType!)}
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                ✉️ Email Instead
+              </Button>
+            </div>
           </div>
         )}
 
@@ -117,10 +325,7 @@ export default function BookPage() {
                 </Button>
               </div>
 
-              <form action="https://formspree.io/f/xvojlzlb" method="POST" className="space-y-6">
-                <input type="hidden" name="_subject" value="🗑️ NEW JUNK REMOVAL BOOKING REQUEST" />
-                <input type="hidden" name="service_type" value="Junk Removal" />
-
+              <form className="space-y-6" onSubmit={handleFormSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="junk-name" className="text-charcoal font-semibold">
@@ -198,21 +403,18 @@ export default function BookPage() {
                     <Label htmlFor="junk-time" className="text-charcoal font-semibold">
                       Preferred Time Slot *
                     </Label>
-                    <Select name="preferred_time" required>
-                      <SelectTrigger className="mt-2 border-sage-200 focus:border-sage-600 focus:ring-sage-600">
-                        <SelectValue placeholder="Choose a time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Morning (9:00 AM - 11:00 AM)">Morning (9:00 AM - 11:00 AM)</SelectItem>
-                        <SelectItem value="Midday (11:00 AM - 1:00 PM)">Midday (11:00 AM - 1:00 PM)</SelectItem>
-                        <SelectItem value="Early Afternoon (1:00 PM - 3:00 PM)">
-                          Early Afternoon (1:00 PM - 3:00 PM)
-                        </SelectItem>
-                        <SelectItem value="Late Afternoon (3:00 PM - 5:00 PM)">
-                          Late Afternoon (3:00 PM - 5:00 PM)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <select
+                      name="preferred_time"
+                      id="junk-time"
+                      required
+                      className="mt-2 w-full px-3 py-2 border border-sage-200 rounded-md focus:border-sage-600 focus:ring-sage-600"
+                    >
+                      <option value="">Choose a time</option>
+                      <option value="Morning (9:00 AM - 11:00 AM)">Morning (9:00 AM - 11:00 AM)</option>
+                      <option value="Midday (11:00 AM - 1:00 PM)">Midday (11:00 AM - 1:00 PM)</option>
+                      <option value="Early Afternoon (1:00 PM - 3:00 PM)">Early Afternoon (1:00 PM - 3:00 PM)</option>
+                      <option value="Late Afternoon (3:00 PM - 5:00 PM)">Late Afternoon (3:00 PM - 5:00 PM)</option>
+                    </select>
                   </div>
                 </div>
 
@@ -221,7 +423,7 @@ export default function BookPage() {
                     Items to Remove & Additional Details *
                   </Label>
                   <Textarea
-                    name="details"
+                    name="message"
                     id="junk-details"
                     rows={6}
                     placeholder="Please describe what needs to be removed (furniture, appliances, etc.), approximate quantities, and any special considerations (stairs, tight spaces, etc.)"
@@ -232,11 +434,39 @@ export default function BookPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl"
+                  disabled={isSubmitting || !emailJSLoaded || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"}
+                  className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl disabled:opacity-50"
                 >
-                  Submit Junk Removal Request
+                  {isSubmitting
+                    ? "Submitting via EmailJS..."
+                    : !emailJSLoaded
+                      ? "Loading EmailJS..."
+                      : EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
+                        ? "Need Public Key to Enable"
+                        : "Submit Junk Removal Request"}
                 </Button>
               </form>
+
+              {/* Backup Options */}
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+                <p className="text-sm text-charcoal-light mb-3">
+                  <strong>Having trouble with the form?</strong> Use these backup options:
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <a href="tel:717-817-8363">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                      📞 Call: 717-817-8363
+                    </Button>
+                  </a>
+                  <Button
+                    size="sm"
+                    onClick={() => openGmailCompose("junk")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    ✉️ Open Gmail
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         )}
@@ -256,10 +486,7 @@ export default function BookPage() {
                 </Button>
               </div>
 
-              <form action="https://formspree.io/f/xvojlzlb" method="POST" className="space-y-6">
-                <input type="hidden" name="_subject" value="🚚 NEW MOVING HELP BOOKING REQUEST" />
-                <input type="hidden" name="service_type" value="Moving Help" />
-
+              <form className="space-y-6" onSubmit={handleFormSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="move-name" className="text-charcoal font-semibold">
@@ -307,17 +534,18 @@ export default function BookPage() {
                     <Label htmlFor="move-type" className="text-charcoal font-semibold">
                       Type of Move *
                     </Label>
-                    <Select name="move_type" required>
-                      <SelectTrigger className="mt-2 border-sage-200 focus:border-sage-600 focus:ring-sage-600">
-                        <SelectValue placeholder="Select move type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Small Load Move (1-2 bedroom)">Small Load Move (1-2 bedroom)</SelectItem>
-                        <SelectItem value="Studio/Apartment Move">Studio/Apartment Move</SelectItem>
-                        <SelectItem value="In-Home Furniture Relocation">In-Home Furniture Relocation</SelectItem>
-                        <SelectItem value="Single Item Move">Single Item Move</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <select
+                      name="move_type"
+                      id="move-type"
+                      required
+                      className="mt-2 w-full px-3 py-2 border border-sage-200 rounded-md focus:border-sage-600 focus:ring-sage-600"
+                    >
+                      <option value="">Select move type</option>
+                      <option value="Small Load Move (1-2 bedroom)">Small Load Move (1-2 bedroom)</option>
+                      <option value="Studio/Apartment Move">Studio/Apartment Move</option>
+                      <option value="In-Home Furniture Relocation">In-Home Furniture Relocation</option>
+                      <option value="Single Item Move">Single Item Move</option>
+                    </select>
                   </div>
                 </div>
 
@@ -370,21 +598,18 @@ export default function BookPage() {
                     <Label htmlFor="move-time" className="text-charcoal font-semibold">
                       Preferred Time Slot *
                     </Label>
-                    <Select name="preferred_time" required>
-                      <SelectTrigger className="mt-2 border-sage-200 focus:border-sage-600 focus:ring-sage-600">
-                        <SelectValue placeholder="Choose a time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Morning (9:00 AM - 11:00 AM)">Morning (9:00 AM - 11:00 AM)</SelectItem>
-                        <SelectItem value="Midday (11:00 AM - 1:00 PM)">Midday (11:00 AM - 1:00 PM)</SelectItem>
-                        <SelectItem value="Early Afternoon (1:00 PM - 3:00 PM)">
-                          Early Afternoon (1:00 PM - 3:00 PM)
-                        </SelectItem>
-                        <SelectItem value="Late Afternoon (3:00 PM - 5:00 PM)">
-                          Late Afternoon (3:00 PM - 5:00 PM)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <select
+                      name="preferred_time"
+                      id="move-time"
+                      required
+                      className="mt-2 w-full px-3 py-2 border border-sage-200 rounded-md focus:border-sage-600 focus:ring-sage-600"
+                    >
+                      <option value="">Choose a time</option>
+                      <option value="Morning (9:00 AM - 11:00 AM)">Morning (9:00 AM - 11:00 AM)</option>
+                      <option value="Midday (11:00 AM - 1:00 PM)">Midday (11:00 AM - 1:00 PM)</option>
+                      <option value="Early Afternoon (1:00 PM - 3:00 PM)">Early Afternoon (1:00 PM - 3:00 PM)</option>
+                      <option value="Late Afternoon (3:00 PM - 5:00 PM)">Late Afternoon (3:00 PM - 5:00 PM)</option>
+                    </select>
                   </div>
                 </div>
 
@@ -393,7 +618,7 @@ export default function BookPage() {
                     Moving Details & Special Requirements *
                   </Label>
                   <Textarea
-                    name="details"
+                    name="message"
                     id="move-details"
                     rows={6}
                     placeholder="Please describe what needs to be moved (furniture, boxes, appliances, etc.), approximate quantities, any stairs or tight spaces, and any special handling requirements"
@@ -404,11 +629,39 @@ export default function BookPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl"
+                  disabled={isSubmitting || !emailJSLoaded || EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"}
+                  className="w-full bg-sage-600 hover:bg-sage-700 text-white py-3 text-lg font-semibold rounded-lg shadow-lg transition-all hover:shadow-xl disabled:opacity-50"
                 >
-                  Submit Moving Help Request
+                  {isSubmitting
+                    ? "Submitting via EmailJS..."
+                    : !emailJSLoaded
+                      ? "Loading EmailJS..."
+                      : EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY_HERE"
+                        ? "Need Public Key to Enable"
+                        : "Submit Moving Help Request"}
                 </Button>
               </form>
+
+              {/* Backup Options */}
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+                <p className="text-sm text-charcoal-light mb-3">
+                  <strong>Having trouble with the form?</strong> Use these backup options:
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <a href="tel:717-817-8363">
+                    <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                      📞 Call Us
+                    </Button>
+                  </a>
+                  <Button
+                    size="sm"
+                    onClick={() => openGmailCompose("move")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    ✉️ Open Gmail
+                  </Button>
+                </div>
+              </div>
             </CardContent>
           </Card>
         )}
@@ -424,4 +677,11 @@ export default function BookPage() {
       </footer>
     </div>
   )
+}
+
+// Extend Window interface for TypeScript
+declare global {
+  interface Window {
+    emailjs: any
+  }
 }

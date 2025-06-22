@@ -69,7 +69,7 @@ export default function HomePage() {
                 <span className="text-gray-700">& Moving Help</span>
               </h1>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Licensed, insured, and locally owned. We handle the heavy lifting so you don't have to. Same-day service
+                Licensed, insured, and locally owned. We handle the heavy lifting so you don't have to. Next-day service
                 available in Hanover, PA and surrounding areas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -124,7 +124,7 @@ export default function HomePage() {
               <div className="text-gray-600 font-medium">Hanover Owned</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-sage-600 mb-2">Same</div>
+              <div className="text-4xl font-bold text-sage-600 mb-2">Next</div>
               <div className="text-gray-600 font-medium">Day Service</div>
             </div>
           </div>
@@ -225,8 +225,8 @@ export default function HomePage() {
               <div className="w-20 h-20 bg-white rounded-full shadow-lg flex items-center justify-center mx-auto mb-6 group-hover:shadow-xl transition-shadow">
                 <Clock className="h-10 w-10 text-sage-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Same-Day Service</h3>
-              <p className="text-gray-600">Quick response when you need us most. Often available same-day</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Next-Day Service</h3>
+              <p className="text-gray-600">Quick response when you need us most. Often available next-day</p>
             </div>
           </div>
         </div>
@@ -288,7 +288,12 @@ export default function HomePage() {
                   717-817-8363
                 </a>
                 <span className="text-gray-600">|</span>
-                <a href="mailto:moveandremovesolutions@gmail.com" className="text-sage-400 hover:text-sage-300">
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sage-400 hover:text-sage-300"
+                >
                   moveandremovesolutions@gmail.com
                 </a>
               </div>

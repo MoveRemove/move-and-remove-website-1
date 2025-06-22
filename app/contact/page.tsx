@@ -92,7 +92,9 @@ export default function ContactPage() {
               <p className="text-charcoal-light mb-2">Send us your questions or requests:</p>
               <p className="text-charcoal-light">
                 <a
-                  href="mailto:moveandremovesolutions@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-sage-600 hover:text-sage-700 transition-colors text-lg font-semibold break-all"
                 >
                   moveandremovesolutions@gmail.com
@@ -131,7 +133,7 @@ export default function ContactPage() {
                     <strong>Emails:</strong> Responded to within 24 hours
                   </p>
                   <p>
-                    <strong>Same-day service:</strong> Often available
+                    <strong>Next-day service:</strong> Often available
                   </p>
                 </div>
               </div>

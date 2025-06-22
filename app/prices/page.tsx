@@ -323,15 +323,11 @@ export default function PricesPage() {
                   <ul className="space-y-2 text-charcoal-light">
                     <li className="flex items-center">
                       <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                      <span>Local, personal service</span>
+                      <span>Local, personal service from Hanover neighbors</span>
                     </li>
                     <li className="flex items-center">
                       <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                      <span>Same-day availability</span>
-                    </li>
-                    <li className="flex items-center">
-                      <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                      <span>No corporate overhead costs</span>
+                      <span>Next-day availability (when possible)</span>
                     </li>
                     <li className="flex items-center">
                       <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
@@ -339,7 +335,15 @@ export default function PricesPage() {
                     </li>
                     <li className="flex items-center">
                       <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
-                      <span>Flexible scheduling</span>
+                      <span>Flexible scheduling around your needs</span>
+                    </li>
+                    <li className="flex items-center">
+                      <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
+                      <span>Honest, upfront pricing with no surprises</span>
+                    </li>
+                    <li className="flex items-center">
+                      <Check className="h-4 w-4 text-green-600 mr-2 flex-shrink-0" />
+                      <span>Personal accountability for every job</span>
                     </li>
                   </ul>
                 </div>
@@ -351,23 +355,27 @@ export default function PricesPage() {
                   <ul className="space-y-2 text-charcoal-light">
                     <li className="flex items-center">
                       <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
-                      <span>High franchise fees passed to you</span>
+                      <span>High franchise fees built into their pricing</span>
                     </li>
                     <li className="flex items-center">
                       <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
-                      <span>Call center customer service</span>
+                      <span>Impersonal call center customer service</span>
                     </li>
                     <li className="flex items-center">
                       <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
-                      <span>Limited availability windows</span>
+                      <span>Rigid scheduling windows</span>
                     </li>
                     <li className="flex items-center">
                       <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
-                      <span>Pushy upselling tactics</span>
+                      <span>Pressure to buy additional services</span>
                     </li>
                     <li className="flex items-center">
                       <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
-                      <span>One-size-fits-all pricing</span>
+                      <span>Corporate policies that limit flexibility</span>
+                    </li>
+                    <li className="flex items-center">
+                      <X className="h-4 w-4 text-red-600 mr-2 flex-shrink-0" />
+                      <span>Distant management with no local connection</span>
                     </li>
                   </ul>
                 </div>
@@ -454,7 +462,16 @@ export default function PricesPage() {
       <footer className="bg-sage-600 text-white py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-lg">
-            <strong>Email:</strong> moveandremovesolutions@gmail.com | <strong>Phone:</strong> 717-817-8363
+            <strong>Email:</strong>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=moveandremovesolutions@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-sage-100 underline transition-colors ml-1"
+            >
+              moveandremovesolutions@gmail.com
+            </a>{" "}
+            | <strong>Phone:</strong> 717-817-8363
           </p>
         </div>
       </footer>
