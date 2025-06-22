@@ -53,10 +53,24 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom colors matching your logo - Darker versions
-        sage: "#6B7C3A", // Darker sage green
-        charcoal: "#1A1A1A", // Darker charcoal
-        cream: "#F0F0DC", // Slightly darker cream
+        // Custom colors matching the logo
+        sage: {
+          50: "#f6f7f4",
+          100: "#e9ebe3",
+          200: "#d4d8c8",
+          300: "#b8bfa4",
+          400: "#9ca682",
+          500: "#7d8660",
+          600: "#6b7354",
+          700: "#545a44",
+          800: "#454a39",
+          900: "#3a3e31",
+        },
+        charcoal: {
+          DEFAULT: "#2d2d2d",
+          light: "#4a4a4a",
+        },
+        cream: "#f8f6f0",
       },
       borderRadius: {
         lg: "var(--radius)",
