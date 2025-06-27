@@ -256,7 +256,7 @@ export default function PricesPage() {
 
         {/* Price Comparison Section - Moved to Bottom */}
         <section className="mb-16">
-          <Card className="border-sage-200 shadow-lg bg-blue-50 border-blue-200">
+          <Card className="border-sage-200 shadow-lg bg-sage-50">
             <CardContent className="p-8">
               <h2 className="text-3xl font-bold text-charcoal text-center mb-8">
                 💰 How We Compare to National Companies
@@ -394,11 +394,11 @@ export default function PricesPage() {
 
         {/* Minimum Charge Section */}
         <section className="mb-16">
-          <Card className="border-orange-200 shadow-lg bg-orange-50 border-2">
+          <Card className="border-sage-200 shadow-lg bg-sage-50">
             <CardContent className="p-8">
               <div className="flex items-center justify-center mb-6">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                  <DollarSign className="h-8 w-8 text-orange-600" />
+                <div className="w-16 h-16 bg-sage-100 rounded-full flex items-center justify-center mr-4">
+                  <DollarSign className="h-8 w-8 text-sage-600" />
                 </div>
                 <h3 className="text-3xl font-bold text-charcoal">$125 Minimum Charge</h3>
               </div>
@@ -411,22 +411,22 @@ export default function PricesPage() {
 
                 <div className="grid md:grid-cols-3 gap-6 mb-6">
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-orange-600 font-semibold mb-2">🚛 Travel & Setup</div>
+                    <div className="text-sage-600 font-semibold mb-2">🚛 Travel & Setup</div>
                     <p className="text-charcoal-light text-sm">
                       Gas, truck maintenance, and time to reach your location
                     </p>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-orange-600 font-semibold mb-2">💪 Professional Labor</div>
+                    <div className="text-sage-600 font-semibold mb-2">💪 Professional Labor</div>
                     <p className="text-charcoal-light text-sm">Skilled team members who handle your items with care</p>
                   </div>
                   <div className="bg-white rounded-lg p-4 shadow-sm">
-                    <div className="text-orange-600 font-semibold mb-2">♻️ Proper Disposal</div>
+                    <div className="text-sage-600 font-semibold mb-2">♻️ Proper Disposal</div>
                     <p className="text-charcoal-light text-sm">Dump fees and responsible disposal of your items</p>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg p-6 border border-orange-200">
+                <div className="bg-white rounded-lg p-6 border border-sage-200">
                   <p className="text-charcoal font-medium">
                     <strong>Good news:</strong> Most of our jobs exceed the minimum anyway! This just ensures we can
                     provide the same professional service for smaller jobs too.

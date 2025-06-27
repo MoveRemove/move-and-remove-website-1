@@ -159,18 +159,18 @@ export default function ContactPage() {
         </Card>
 
         {/* Special Offers */}
-        <Card className="border-sage-200 shadow-lg bg-green-50 border-green-200 mb-12">
+        <Card className="border-sage-200 shadow-lg bg-sage-50 mb-12">
           <CardContent className="p-8">
             <h3 className="text-2xl font-bold text-charcoal mb-6 text-center">💰 Save Money with Our Special Offers</h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-                <h4 className="text-xl font-semibold text-green-700 mb-3">Cash Discount</h4>
-                <p className="text-3xl font-bold text-green-600 mb-2">10% OFF</p>
+                <h4 className="text-xl font-semibold text-sage-700 mb-3">Cash Discount</h4>
+                <p className="text-3xl font-bold text-sage-600 mb-2">10% OFF</p>
                 <p className="text-charcoal-light">when you pay with cash!</p>
               </div>
               <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-                <h4 className="text-xl font-semibold text-green-700 mb-3">Referral Rewards</h4>
-                <p className="text-3xl font-bold text-green-600 mb-2">$15 OFF</p>
+                <h4 className="text-xl font-semibold text-sage-700 mb-3">Referral Rewards</h4>
+                <p className="text-3xl font-bold text-sage-600 mb-2">$15 OFF</p>
                 <p className="text-charcoal-light">for every customer you refer who uses our services!</p>
               </div>
             </div>
